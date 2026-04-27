@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Basics — BES103 Study Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1117;--bg2:#161b22;--bg3:#21262d;--border:#30363d;--pyb:#306998;--pyy:#FFE873;--pylb:#4B9CD3;--acc:#58a6ff;--grn:#3fb950;--red:#f85149;--ora:#d29922;--txt:#e6edf3;--muted:#8b949e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font-family:'Syne',sans-serif;min-height:100vh}
+/* HEADER */
+header{background:linear-gradient(135deg,#0d1117 0%,#1a2538 50%,#0d1117 100%);border-bottom:1px solid var(--border);padding:2.5rem 2rem;text-align:center;position:relative;overflow:hidden}
+header::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 40% 60%,rgba(48,105,152,.18) 0%,transparent 65%),radial-gradient(ellipse at 70% 30%,rgba(255,232,115,.08) 0%,transparent 60%);pointer-events:none}
+.badge{display:inline-block;background:rgba(255,232,115,.1);border:1px solid var(--pyy);color:var(--pyy);padding:.25rem .9rem;border-radius:2rem;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem}
+h1.mt{font-size:clamp(1.8rem,5vw,3.2rem);font-weight:800;background:linear-gradient(135deg,var(--pyy) 0%,#fff 45%,var(--pylb) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;margin-bottom:.4rem;position:relative}
+.sub{color:var(--muted);font-size:.95rem;position:relative}
+/* NAV */
+.tnav{display:flex;overflow-x:auto;border-bottom:1px solid var(--border);background:var(--bg2);padding:0 1rem;gap:.15rem;scrollbar-width:none;position:sticky;top:0;z-index:100}
+.tnav::-webkit-scrollbar{display:none}
+.tb{padding:.75rem 1rem;background:none;border:none;color:var(--muted);cursor:pointer;white-space:nowrap;font-family:'Syne',sans-serif;font-size:.8rem;font-weight:600;border-bottom:2.5px solid transparent;transition:all .2s;display:flex;align-items:center;gap:.35rem}
+.tb:hover{color:var(--txt);background:rgba(255,255,255,.04)}
+.tb.active{color:var(--pyy);border-bottom-color:var(--pyy)}
+.tb.hl{color:var(--pyy)}
+/* CONTENT */
+.tc{display:none;padding:2rem;max-width:1200px;margin:0 auto}
+.tc.active{display:block}
+/* TITLES */
+.st{font-size:1.6rem;font-weight:800;margin-bottom:1.5rem;display:flex;align-items:center;gap:.6rem}
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.4rem;margin-bottom:1.25rem}
+.card h3{font-size:1rem;font-weight:700;margin-bottom:.75rem;color:var(--pyy)}
+.card p,.card li{color:var(--muted);line-height:1.75;font-size:.9rem}
+/* CODE */
+.cb{background:#010409;border:1px solid var(--border);border-radius:8px;padding:1.25rem;font-family:'JetBrains Mono',monospace;font-size:.82rem;line-height:1.8;overflow-x:auto;margin:.75rem 0;white-space:pre}
+.cm{color:#6a737d}.kw{color:#f97583}.st2{color:#9ecbff}.fn{color:#b392f0}.nm{color:#79b8ff}.op{color:#e6edf3;opacity:.8}.out{color:var(--grn)}
+/* GRID */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.gauto{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1rem}
+@media(max-width:768px){.g2,.g3{grid-template-columns:1fr}}
+/* HIGHLIGHT BOX */
+.hbox{background:linear-gradient(135deg,rgba(255,232,115,.07),rgba(48,105,152,.07));border:1px solid rgba(255,232,115,.3);border-radius:12px;padding:1.25rem;margin-bottom:1.5rem;font-size:.9rem;color:var(--txt)}
+.hbox strong{color:var(--pyy)}
+/* FLOWCHART */
+.fcontainer{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.75rem;overflow-x:auto;margin-bottom:2rem}
+.ftitle{font-size:1.1rem;font-weight:700;color:var(--pyy);margin-bottom:1.25rem;text-align:center}
+/* BTN */
+.btn{padding:.6rem 1.4rem;border:none;border-radius:8px;cursor:pointer;font-family:'Syne',sans-serif;font-weight:700;font-size:.85rem;transition:all .2s;display:inline-flex;align-items:center;gap:.4rem}
+.btn-p{background:var(--pyb);color:#fff}.btn-p:hover{background:var(--pylb);transform:translateY(-1px)}
+.btn-y{background:var(--pyy);color:#111}.btn-y:hover{background:#ffd700;transform:translateY(-1px)}
+.btn-g{background:transparent;border:1px solid var(--border);color:var(--txt)}.btn-g:hover{background:var(--bg3)}
+.btn-r{background:var(--red);color:#fff}.btn-r:hover{opacity:.85}
+/* TABLE */
+table{width:100%;border-collapse:collapse;font-size:.875rem}
+th{background:var(--bg3);padding:.65rem 1rem;text-align:left;color:var(--pyy);font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
+td{padding:.65rem 1rem;border-bottom:1px solid var(--border);color:var(--muted)}
+code{font-family:'JetBrains Mono',monospace;background:var(--bg3);padding:.1rem .35rem;border-radius:4px;color:var(--pylb);font-size:.88em}
+/* LIST */
+ul.sl{list-style:none;padding:0}
+ul.sl li{padding:.45rem 0;padding-left:1.4rem;position:relative;color:var(--muted);line-height:1.7;border-bottom:1px solid rgba(255,255,255,.03);font-size:.9rem}
+ul.sl li::before{content:'▸';color:var(--pyy);position:absolute;left:0}
+/* TAGS */
+.tag{display:inline-block;padding:.12rem .45rem;border-radius:4px;font-size:.68rem;font-weight:700;text-transform:uppercase}
+.tb2{background:rgba(48,105,152,.3);color:var(--pylb)}.ty{background:rgba(255,232,115,.2);color:var(--pyy)}.tg{background:rgba(63,185,80,.2);color:var(--grn)}.tr{background:rgba(248,81,73,.2);color:var(--red)}
+/* ===FLASHCARDS=== */
+.fa{text-align:center;padding:1rem 0}
+.fwrap{perspective:1000px;margin:0 auto 1.5rem;width:100%;max-width:580px;height:260px;cursor:pointer}
+.fc{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.fc.flipped{transform:rotateY(180deg)}
+.ff,.fb{position:absolute;width:100%;height:100%;backface-visibility:hidden;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center}
+.ff{background:linear-gradient(135deg,#1e3050,#0d1f3a);border:1.5px solid var(--pyb)}
+.fb{background:linear-gradient(135deg,#0d2b1a,#1a4a2a);border:1.5px solid var(--grn);transform:rotateY(180deg)}
+.clabel{font-size:.65rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:.75rem;opacity:.55}
+.ctxt{font-size:1.2rem;font-weight:700;line-height:1.5}
+.csub{font-family:'JetBrains Mono',monospace;font-size:.95rem;color:var(--pyy);margin-top:.6rem}
+.fctrls{display:flex;gap:.75rem;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
+.ptxt{color:var(--muted);font-size:.85rem;min-width:80px}
+/* ===QUIZ=== */
+.qhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem}
+.sdisplay{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.75rem 1.25rem;display:flex;gap:1.5rem}
+.si{text-align:center}
+.sn{font-size:1.6rem;font-weight:800;color:var(--pyy);display:block;line-height:1}
+.sl2{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.pbo{background:var(--bg3);border-radius:4px;height:5px;margin-bottom:1.25rem;overflow:hidden}
+.pbi{height:100%;background:linear-gradient(90deg,var(--pyb),var(--pyy));border-radius:4px;transition:width .4s ease}
+.qcard{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.75rem;margin-bottom:1.25rem}
+.qmeta{font-size:.7rem;color:var(--pylb);text-transform:uppercase;letter-spacing:.12em;margin-bottom:.6rem}
+.qtxt{font-size:1.05rem;font-weight:600;margin-bottom:1.25rem;line-height:1.65}
+.ogrid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+@media(max-width:580px){.ogrid{grid-template-columns:1fr}}
+.ob{background:var(--bg3);border:1.5px solid var(--border);border-radius:9px;padding:.8rem .9rem;color:var(--txt);cursor:pointer;text-align:left;font-family:'Syne',sans-serif;font-size:.875rem;transition:all .2s;line-height:1.4}
+.ob:hover:not(:disabled){border-color:var(--pyb);background:rgba(48,105,152,.1)}
+.ob.correct{background:rgba(63,185,80,.15);border-color:var(--grn);color:var(--grn)}
+.ob.wrong{background:rgba(248,81,73,.15);border-color:var(--red);color:var(--red)}
+.fb2{padding:.85rem 1rem;border-radius:8px;margin-top:.75rem;font-size:.875rem;display:none}
+.fb2.show{display:block}
+.cfb{background:rgba(63,185,80,.1);border:1px solid var(--grn);color:var(--grn)}
+.wfb{background:rgba(248,81,73,.1);border:1px solid var(--red);color:var(--red)}
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem}
+/* start/result */
+.sscreen{text-align:center;padding:3rem 1.5rem}
+.sscreen h2{font-size:2rem;font-weight:800;margin-bottom:.75rem}
+.sscreen p{color:var(--muted);margin-bottom:1.5rem;font-size:.95rem}
+.rscreen{text-align:center;padding:2.5rem 1.5rem}
+.rscore{font-size:4.5rem;font-weight:800;color:var(--pyy);display:block;line-height:1}
+.rdot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(36px,1fr));gap:5px;margin:1.25rem 0}
+.rdot{width:100%;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700}
+.cd{background:var(--grn)}.wd{background:var(--red)}
+/* ===GAME=== */
+.gcontainer{text-align:center}
+.gstats{display:flex;justify-content:center;gap:1.25rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.sbox{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:.75rem 1.5rem;text-align:center}
+.sv{font-size:1.75rem;font-weight:800;display:block;line-height:1}
+.slb{font-size:.65rem;color:var(--muted);text-transform:uppercase}
+.gcarea{background:var(--bg2);border:2px solid var(--border);border-radius:20px;padding:2rem;max-width:680px;margin:0 auto 1.5rem}
+.tbar{height:7px;background:var(--bg3);border-radius:4px;margin-bottom:1.5rem;overflow:hidden}
+.tfill{height:100%;background:linear-gradient(90deg,var(--grn) 0%,var(--ora) 50%,var(--red) 100%);border-radius:4px;transition:width .1s linear}
+.gprompt{font-size:1.15rem;font-weight:700;margin-bottom:1.5rem;min-height:55px;line-height:1.5}
+.gopts{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.gob{background:var(--bg3);border:2px solid var(--border);border-radius:12px;padding:1rem;color:var(--txt);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:.9rem;transition:all .15s;line-height:1.4}
+.gob:hover:not(:disabled){border-color:var(--pyy);background:rgba(255,232,115,.05);transform:translateY(-2px)}
+.gob.gc{background:rgba(63,185,80,.2);border-color:var(--grn);color:var(--grn)}
+.gob.gw{background:rgba(248,81,73,.2);border-color:var(--red);color:var(--red)}
+.gresult{text-align:center;padding:2.5rem 1.5rem;display:none}
+.gresult.show{display:block}
+.grscore{font-size:3.5rem;font-weight:800;color:var(--pyy);display:block}
+.glives{display:flex;gap:.4rem;justify-content:center;margin-bottom:1rem}
+.heart{font-size:1.4rem}
+/* overview cards */
+.ocard{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:1.25rem;border-left:3px solid var(--pyy);transition:transform .2s}
+.ocard:hover{transform:translateY(-2px)}
+.ocard h3{font-size:.95rem;font-weight:700;color:var(--pyy);margin-bottom:.4rem}
+.ocard p{font-size:.85rem;color:var(--muted);line-height:1.6}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">BES103 · Lesson 3 · USep College of Engineering</div>
+  <h1 class="mt">Python Basics</h1>
+  <p class="sub">Electronics Engineering Program · Interactive Study Hub</p>
+</header>
+
+<nav class="tnav">
+  <button class="tb hl active" onclick="showTab('flowchart')">🗺️ Flowcharts ⭐</button>
+  <button class="tb" onclick="showTab('overview')">📖 Overview</button>
+  <button class="tb" onclick="showTab('print')">🖨️ Print &amp; Comments</button>
+  <button class="tb" onclick="showTab('variables')">📦 Variables</button>
+  <button class="tb" onclick="showTab('types')">🔢 Types &amp; Arithmetic</button>
+  <button class="tb" onclick="showTab('whitespace')">⬜ Whitespace</button>
+  <button class="tb" onclick="showTab('assignment')">🔗 Assignment</button>
+  <button class="tb" onclick="showTab('naming')">📛 Naming Rules</button>
+  <button class="tb" onclick="showTab('flashcards')">🃏 Flashcards</button>
+  <button class="tb" onclick="showTab('game')">🎮 Code Sprint</button>
+  <button class="tb" onclick="showTab('quiz')">📝 75-Item Quiz</button>
+</nav>
+
+<!-- ============================================================ FLOWCHART TAB -->
+<div id="tab-flowchart" class="tc active">
+  <h2 class="st">🗺️ Python Basics — Concept Flowcharts</h2>
+  <div class="hbox">
+    <strong>⭐ EXAM HIGHLIGHT:</strong> Flowcharts are a key part of BES103 and may appear in Quiz 3. Study each diagram carefully — they show how Python interprets your code, manages variables, decides types, and structures blocks.
+  </div>
+
+  <!-- Flowchart 1 -->
+  <div class="fcontainer">
+    <div class="ftitle">① Python Program Execution Flow</div>
+    <svg viewBox="0 0 760 540" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:auto">
+      <defs>
+        <marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4B9CD3"/>
+        </marker>
+        <filter id="glow"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- Start -->
+      <ellipse cx="380" cy="35" rx="70" ry="24" fill="#306998" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="40" text-anchor="middle" fill="#FFE873" font-family="Syne" font-weight="700" font-size="13">START</text>
+      <!-- arrow -->
+      <line x1="380" y1="59" x2="380" y2="88" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah)"/>
+      <!-- Write Code -->
+      <rect x="280" y="90" width="200" height="44" rx="8" fill="#161b22" stroke="#306998" stroke-width="1.5"/>
+      <text x="380" y="108" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="12">Write Python Code</text>
+      <text x="380" y="124" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="10">(.py file)</text>
+      <line x1="380" y1="134" x2="380" y2="163" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah)"/>
+      <!-- Python Interpreter -->
+      <rect x="255" y="165" width="250" height="44" rx="8" fill="#161b22" stroke="#FFE873" stroke-width="1.5"/>
+      <text x="380" y="183" text-anchor="middle" fill="#FFE873" font-family="Syne" font-weight="700" font-size="12">Python Interpreter</text>
+      <text x="380" y="199" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="10">Reads file top → bottom</text>
+      <line x1="380" y1="209" x2="380" y2="238" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah)"/>
+      <!-- Read Line -->
+      <polygon points="380,240 490,265 380,290 270,265" fill="#161b22" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="261" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">Is it a valid</text>
+      <text x="380" y="276" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">statement?</text>
+      <!-- NO → Error -->
+      <line x1="490" y1="265" x2="580" y2="265" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah)"/>
+      <text x="535" y="258" text-anchor="middle" fill="#f85149" font-family="Syne" font-size="11" font-weight="700">NO</text>
+      <rect x="580" y="243" width="130" height="44" rx="8" fill="#2d1b1b" stroke="#f85149" stroke-width="1.5"/>
+      <text x="645" y="261" text-anchor="middle" fill="#f85149" font-family="Syne" font-weight="700" font-size="11">SyntaxError /</text>
+      <text x="645" y="276" text-anchor="middle" fill="#f85149" font-family="Syne" font-weight="700" font-size="11">Traceback</text>
+      <!-- YES → Execute -->
+      <line x1="380" y1="290" x2="380" y2="320" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah)"/>
+      <text x="362" y="310" text-anchor="middle" fill="#3fb950" font-family="Syne" font-size="11" font-weight="700">YES</text>
+      <rect x="280" y="322" width="200" height="44" rx="8" fill="#0d2b1a" stroke="#3fb950" stroke-width="1.5"/>
+      <text x="380" y="340" text-anchor="middle" fill="#3fb950" font-family="Syne" font-weight="700" font-size="12">Execute Statement</text>
+      <text x="380" y="356" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">assign / print / call...</text>
+      <line x1="380" y1="366" x2="380" y2="395" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah)"/>
+      <!-- More lines? -->
+      <polygon points="380,397 490,422 380,447 270,422" fill="#161b22" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="418" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">More lines</text>
+      <text x="380" y="433" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">remaining?</text>
+      <!-- YES loop back -->
+      <line x1="270" y1="422" x2="160" y2="422" stroke="#4B9CD3" stroke-width="1.5"/>
+      <line x1="160" y1="422" x2="160" y2="265" stroke="#4B9CD3" stroke-width="1.5"/>
+      <line x1="160" y1="265" x2="269" y2="265" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah)"/>
+      <text x="195" y="345" text-anchor="middle" fill="#FFE873" font-family="Syne" font-size="11" font-weight="700">YES</text>
+      <!-- NO → End -->
+      <line x1="380" y1="447" x2="380" y2="490" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah)"/>
+      <text x="398" y="472" text-anchor="start" fill="#f85149" font-family="Syne" font-size="11" font-weight="700">NO</text>
+      <ellipse cx="380" cy="510" rx="70" ry="24" fill="#306998" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="515" text-anchor="middle" fill="#FFE873" font-family="Syne" font-weight="700" font-size="13">END</text>
+    </svg>
+  </div>
+
+  <!-- Flowchart 2 -->
+  <div class="fcontainer">
+    <div class="ftitle">② Variable Assignment &amp; Type Flow</div>
+    <svg viewBox="0 0 760 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:auto">
+      <defs>
+        <marker id="ah2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4B9CD3"/>
+        </marker>
+      </defs>
+      <!-- Start -->
+      <ellipse cx="380" cy="35" rx="90" ry="24" fill="#306998" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="40" text-anchor="middle" fill="#FFE873" font-family="Syne" font-weight="700" font-size="13">x = some_value</text>
+      <line x1="380" y1="59" x2="380" y2="88" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah2)"/>
+      <!-- Does name exist? -->
+      <polygon points="380,90 505,118 380,146 255,118" fill="#161b22" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="113" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">Does name 'x'</text>
+      <text x="380" y="128" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">already exist?</text>
+      <!-- YES old name exists -->
+      <line x1="505" y1="118" x2="620" y2="118" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah2)"/>
+      <text x="563" y="111" text-anchor="middle" fill="#FFE873" font-family="Syne" font-size="11" font-weight="700">YES</text>
+      <rect x="620" y="96" width="120" height="44" rx="8" fill="#21262d" stroke="#d29922" stroke-width="1.5"/>
+      <text x="680" y="114" text-anchor="middle" fill="#d29922" font-family="Syne" font-weight="600" font-size="11">Old value loses</text>
+      <text x="680" y="129" text-anchor="middle" fill="#d29922" font-family="Syne" font-weight="600" font-size="11">reference</text>
+      <line x1="680" y1="140" x2="680" y2="175" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah2)"/>
+      <rect x="620" y="177" width="120" height="44" rx="8" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+      <text x="680" y="195" text-anchor="middle" fill="#8b949e" font-family="Syne" font-weight="600" font-size="11">Garbage</text>
+      <text x="680" y="210" text-anchor="middle" fill="#8b949e" font-family="Syne" font-weight="600" font-size="11">Collected 🗑️</text>
+      <!-- NO new name created -->
+      <line x1="380" y1="146" x2="380" y2="175" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah2)"/>
+      <text x="360" y="165" text-anchor="middle" fill="#3fb950" font-family="Syne" font-size="11" font-weight="700">NO</text>
+      <rect x="270" y="177" width="220" height="44" rx="8" fill="#0d2b1a" stroke="#3fb950" stroke-width="1.5"/>
+      <text x="380" y="195" text-anchor="middle" fill="#3fb950" font-family="Syne" font-weight="700" font-size="12">New name 'x' created</text>
+      <text x="380" y="211" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">No declaration needed!</text>
+      <line x1="380" y1="221" x2="380" y2="250" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah2)"/>
+      <!-- Name points to value -->
+      <rect x="255" y="252" width="250" height="44" rx="8" fill="#161b22" stroke="#FFE873" stroke-width="1.5"/>
+      <text x="380" y="270" text-anchor="middle" fill="#FFE873" font-family="Syne" font-weight="700" font-size="12">'x' → points to value object</text>
+      <text x="380" y="286" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">Assignment creates references</text>
+      <line x1="380" y1="296" x2="380" y2="325" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah2)"/>
+      <!-- Value has type -->
+      <rect x="255" y="327" width="250" height="44" rx="8" fill="#1e3050" stroke="#306998" stroke-width="1.5"/>
+      <text x="380" y="345" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="700" font-size="12">Value object HAS a type</text>
+      <text x="380" y="361" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">int / float / str / complex</text>
+      <line x1="380" y1="371" x2="380" y2="400" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah2)"/>
+      <!-- Type auto-detected -->
+      <rect x="255" y="402" width="250" height="44" rx="8" fill="#161b22" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="420" text-anchor="middle" fill="#4B9CD3" font-family="Syne" font-weight="700" font-size="12">Python auto-detects type</text>
+      <text x="380" y="436" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">Variable = just a name tag</text>
+      <line x1="380" y1="446" x2="380" y2="468" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah2)"/>
+      <ellipse cx="380" cy="482" rx="70" ry="18" fill="#306998" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="487" text-anchor="middle" fill="#FFE873" font-family="Syne" font-weight="700" font-size="12">DONE</text>
+    </svg>
+  </div>
+
+  <!-- Flowchart 3 -->
+  <div class="fcontainer">
+    <div class="ftitle">③ Python Data Type Decision Tree</div>
+    <svg viewBox="0 0 800 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:800px;display:block;margin:auto">
+      <defs>
+        <marker id="ah3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4B9CD3"/>
+        </marker>
+      </defs>
+      <!-- Root -->
+      <ellipse cx="400" cy="30" rx="110" ry="24" fill="#306998" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="400" y="35" text-anchor="middle" fill="#FFE873" font-family="Syne" font-weight="700" font-size="13">What kind of data?</text>
+      <!-- line down -->
+      <line x1="400" y1="54" x2="400" y2="83" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah3)"/>
+      <!-- Decision: Numeric? -->
+      <polygon points="400,85 530,115 400,145 270,115" fill="#161b22" stroke="#FFE873" stroke-width="1.5"/>
+      <text x="400" y="111" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">Numeric</text>
+      <text x="400" y="126" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">value?</text>
+      <!-- YES numeric → down -->
+      <line x1="400" y1="145" x2="400" y2="175" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah3)"/>
+      <text x="382" y="165" text-anchor="middle" fill="#3fb950" font-family="Syne" font-size="10" font-weight="700">YES</text>
+      <!-- Whole number? -->
+      <polygon points="400,177 530,205 400,233 270,205" fill="#161b22" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="400" y="201" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">Whole</text>
+      <text x="400" y="216" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">number?</text>
+      <!-- YES → int -->
+      <line x1="270" y1="205" x2="175" y2="205" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah3)"/>
+      <text x="223" y="198" text-anchor="middle" fill="#3fb950" font-family="Syne" font-size="10" font-weight="700">YES</text>
+      <rect x="75" y="183" width="100" height="44" rx="8" fill="#1e3050" stroke="#3fb950" stroke-width="1.5"/>
+      <text x="125" y="201" text-anchor="middle" fill="#3fb950" font-family="Syne" font-weight="800" font-size="14">int</text>
+      <text x="125" y="217" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">x = 5</text>
+      <!-- NO decimal? -->
+      <line x1="400" y1="233" x2="400" y2="265" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah3)"/>
+      <text x="382" y="253" text-anchor="middle" fill="#f85149" font-family="Syne" font-size="10" font-weight="700">NO</text>
+      <!-- Decimal? -->
+      <polygon points="400,267 530,295 400,323 270,295" fill="#161b22" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="400" y="291" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">Decimal /</text>
+      <text x="400" y="306" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">floating?</text>
+      <!-- YES float -->
+      <line x1="270" y1="295" x2="175" y2="295" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah3)"/>
+      <text x="223" y="288" text-anchor="middle" fill="#3fb950" font-family="Syne" font-size="10" font-weight="700">YES</text>
+      <rect x="75" y="273" width="100" height="44" rx="8" fill="#1e3050" stroke="#d29922" stroke-width="1.5"/>
+      <text x="125" y="291" text-anchor="middle" fill="#d29922" font-family="Syne" font-weight="800" font-size="14">float</text>
+      <text x="125" y="307" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">x = 3.14</text>
+      <!-- NO complex? -->
+      <line x1="400" y1="323" x2="400" y2="355" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah3)"/>
+      <text x="382" y="343" text-anchor="middle" fill="#f85149" font-family="Syne" font-size="10" font-weight="700">NO</text>
+      <rect x="300" y="357" width="200" height="44" rx="8" fill="#1e3050" stroke="#b392f0" stroke-width="1.5"/>
+      <text x="400" y="375" text-anchor="middle" fill="#b392f0" font-family="Syne" font-weight="800" font-size="14">complex</text>
+      <text x="400" y="391" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">x = 3+4j</text>
+      <!-- NO numeric → text -->
+      <line x1="530" y1="115" x2="635" y2="115" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah3)"/>
+      <text x="583" y="108" text-anchor="middle" fill="#f85149" font-family="Syne" font-size="10" font-weight="700">NO</text>
+      <!-- Text? -->
+      <polygon points="685,115 735,145 685,175 635,145" fill="#161b22" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="685" y="141" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="10">Text /</text>
+      <text x="685" y="156" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="10">string?</text>
+      <!-- YES str -->
+      <line x1="685" y1="175" x2="685" y2="215" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah3)"/>
+      <text x="703" y="197" text-anchor="start" fill="#3fb950" font-family="Syne" font-size="10" font-weight="700">YES</text>
+      <rect x="635" y="217" width="100" height="44" rx="8" fill="#1e3050" stroke="#9ecbff" stroke-width="1.5"/>
+      <text x="685" y="235" text-anchor="middle" fill="#9ecbff" font-family="Syne" font-weight="800" font-size="14">str</text>
+      <text x="685" y="251" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">"Hello"</text>
+      <!-- NEED CONVERSION? bottom box -->
+      <rect x="250" y="430" width="300" height="65" rx="12" fill="#21262d" stroke="#FFE873" stroke-width="1.5"/>
+      <text x="400" y="449" text-anchor="middle" fill="#FFE873" font-family="Syne" font-weight="700" font-size="12">Need Type Conversion?</text>
+      <text x="400" y="466" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">int(x) | float(x) | str(x)</text>
+      <text x="400" y="482" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">chr(x) | ord(x) | hex(x) | oct(x)</text>
+      <line x1="400" y1="401" x2="400" y2="429" stroke="#FFE873" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#ah3)"/>
+    </svg>
+  </div>
+
+  <!-- Flowchart 4 -->
+  <div class="fcontainer">
+    <div class="ftitle">④ Python Code Block Structure (Indentation Flow)</div>
+    <svg viewBox="0 0 760 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:auto">
+      <defs>
+        <marker id="ah4" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4B9CD3"/>
+        </marker>
+      </defs>
+      <!-- Code line -->
+      <rect x="255" y="20" width="250" height="44" rx="8" fill="#161b22" stroke="#306998" stroke-width="1.5"/>
+      <text x="380" y="38" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="700" font-size="12">Code Statement Written</text>
+      <text x="380" y="54" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">e.g. def hello(): | if x == 5:</text>
+      <line x1="380" y1="64" x2="380" y2="93" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah4)"/>
+      <!-- ends with colon? -->
+      <polygon points="380,95 500,123 380,151 260,123" fill="#161b22" stroke="#FFE873" stroke-width="1.5"/>
+      <text x="380" y="119" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">Ends with</text>
+      <text x="380" y="134" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">colon (:) ?</text>
+      <!-- NO continue -->
+      <line x1="500" y1="123" x2="620" y2="123" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah4)"/>
+      <text x="560" y="116" text-anchor="middle" fill="#f85149" font-family="Syne" font-size="11" font-weight="700">NO</text>
+      <rect x="620" y="101" width="110" height="44" rx="8" fill="#21262d" stroke="#8b949e" stroke-width="1.5"/>
+      <text x="675" y="119" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">Single</text>
+      <text x="675" y="134" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">Statement</text>
+      <!-- YES colon → next must indent -->
+      <line x1="380" y1="151" x2="380" y2="180" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah4)"/>
+      <text x="362" y="170" text-anchor="middle" fill="#3fb950" font-family="Syne" font-size="11" font-weight="700">YES</text>
+      <rect x="255" y="182" width="250" height="44" rx="8" fill="#1e3050" stroke="#3fb950" stroke-width="1.5"/>
+      <text x="380" y="200" text-anchor="middle" fill="#3fb950" font-family="Syne" font-weight="700" font-size="12">Next line MUST be indented</text>
+      <text x="380" y="216" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">Use consistent tabs OR spaces</text>
+      <line x1="380" y1="226" x2="380" y2="255" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah4)"/>
+      <!-- inside block -->
+      <rect x="255" y="257" width="250" height="44" rx="8" fill="#161b22" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="275" text-anchor="middle" fill="#4B9CD3" font-family="Syne" font-weight="700" font-size="12">Inside the Block</text>
+      <text x="380" y="291" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">All indented lines = part of block</text>
+      <line x1="380" y1="301" x2="380" y2="330" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah4)"/>
+      <!-- Next line less indent? -->
+      <polygon points="380,332 510,360 380,388 250,360" fill="#161b22" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="356" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">Next line less</text>
+      <text x="380" y="371" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">indented?</text>
+      <!-- YES → outside block -->
+      <line x1="380" y1="388" x2="380" y2="420" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah4)"/>
+      <text x="362" y="408" text-anchor="middle" fill="#3fb950" font-family="Syne" font-size="11" font-weight="700">YES</text>
+      <rect x="255" y="422" width="250" height="44" rx="8" fill="#2d1b1b" stroke="#d29922" stroke-width="1.5"/>
+      <text x="380" y="440" text-anchor="middle" fill="#d29922" font-family="Syne" font-weight="700" font-size="12">Block ENDS</text>
+      <text x="380" y="456" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">Outside the block now</text>
+      <!-- NO → loop inside -->
+      <line x1="510" y1="360" x2="605" y2="360" stroke="#4B9CD3" stroke-width="1.5"/>
+      <line x1="605" y1="360" x2="605" y2="279" stroke="#4B9CD3" stroke-width="1.5"/>
+      <line x1="605" y1="279" x2="506" y2="279" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah4)"/>
+      <text x="623" y="315" text-anchor="start" fill="#f85149" font-family="Syne" font-size="11" font-weight="700">NO</text>
+    </svg>
+  </div>
+
+  <!-- Flowchart 5: Print Statement -->
+  <div class="fcontainer">
+    <div class="ftitle">⑤ print() Statement Logic</div>
+    <svg viewBox="0 0 760 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:760px;display:block;margin:auto">
+      <defs>
+        <marker id="ah5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#4B9CD3"/>
+        </marker>
+      </defs>
+      <ellipse cx="380" cy="30" rx="100" ry="22" fill="#306998" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="380" y="35" text-anchor="middle" fill="#FFE873" font-family="Syne" font-weight="700" font-size="13">print( ... )</text>
+      <line x1="380" y1="52" x2="380" y2="80" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah5)"/>
+      <polygon points="380,82 500,110 380,138 260,110" fill="#161b22" stroke="#FFE873" stroke-width="1.5"/>
+      <text x="380" y="106" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">Has</text>
+      <text x="380" y="121" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="11">argument?</text>
+      <!-- NO → blank line -->
+      <line x1="380" y1="138" x2="380" y2="170" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah5)"/>
+      <text x="362" y="158" text-anchor="middle" fill="#f85149" font-family="Syne" font-size="11" font-weight="700">NO</text>
+      <rect x="280" y="172" width="200" height="44" rx="8" fill="#161b22" stroke="#8b949e" stroke-width="1.5"/>
+      <text x="380" y="190" text-anchor="middle" fill="#8b949e" font-family="Syne" font-weight="600" font-size="12">Prints a blank line</text>
+      <text x="380" y="206" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">print()</text>
+      <!-- YES → what type? -->
+      <line x1="500" y1="110" x2="600" y2="110" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah5)"/>
+      <text x="550" y="103" text-anchor="middle" fill="#3fb950" font-family="Syne" font-size="11" font-weight="700">YES</text>
+      <polygon points="645,110 720,138 645,166 570,138" fill="#161b22" stroke="#4B9CD3" stroke-width="1.5"/>
+      <text x="645" y="134" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="10">String or</text>
+      <text x="645" y="149" text-anchor="middle" fill="#e6edf3" font-family="Syne" font-weight="600" font-size="10">expression?</text>
+      <!-- String → display -->
+      <line x1="645" y1="166" x2="645" y2="210" stroke="#4B9CD3" stroke-width="1.5" marker-end="url(#ah5)"/>
+      <text x="663" y="192" text-anchor="start" fill="#3fb950" font-family="Syne" font-size="10" font-weight="700">STRING</text>
+      <rect x="585" y="212" width="120" height="44" rx="8" fill="#0d2b1a" stroke="#3fb950" stroke-width="1.5"/>
+      <text x="645" y="230" text-anchor="middle" fill="#3fb950" font-family="Syne" font-weight="600" font-size="11">Display</text>
+      <text x="645" y="246" text-anchor="middle" fill="#3fb950" font-family="Syne" font-weight="600" font-size="11">directly</text>
+      <!-- Escape sequences -->
+      <rect x="180" y="270" width="200" height="55" rx="8" fill="#21262d" stroke="#d29922" stroke-width="1.5"/>
+      <text x="280" y="289" text-anchor="middle" fill="#d29922" font-family="Syne" font-weight="700" font-size="11">Escape Sequences</text>
+      <text x="280" y="305" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">\" → include double quote</text>
+      <text x="280" y="319" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">\n → newline | \t → tab</text>
+      <!-- single or double quotes -->
+      <rect x="420" y="270" width="200" height="55" rx="8" fill="#21262d" stroke="#9ecbff" stroke-width="1.5"/>
+      <text x="520" y="289" text-anchor="middle" fill="#9ecbff" font-family="Syne" font-weight="700" font-size="11">Quote Style</text>
+      <text x="520" y="305" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">"Hello" == 'Hello'</text>
+      <text x="520" y="319" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">Both are valid!</text>
+      <!-- Output -->
+      <rect x="255" y="360" width="250" height="40" rx="8" fill="#0d2b1a" stroke="#3fb950" stroke-width="1.5"/>
+      <text x="380" y="378" text-anchor="middle" fill="#3fb950" font-family="Syne" font-weight="700" font-size="12">Output to Console ✓</text>
+      <text x="380" y="393" text-anchor="middle" fill="#8b949e" font-family="JetBrains Mono" font-size="9">followed by newline</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ============================================================ OVERVIEW TAB -->
+<div id="tab-overview" class="tc">
+  <h2 class="st">📖 Python Basics Overview</h2>
+  <div class="hbox">
+    <strong>BES103 Lesson 3</strong> covers the foundational concepts of Python programming. Master these before Quiz 3 (April 28) which covers Algorithms and Python Basics.
+  </div>
+  <div class="gauto" style="margin-bottom:1.5rem">
+    <div class="ocard"><h3>🖨️ print() Statement</h3><p>Display text or values. Use <code>print()</code> for blank lines. Supports escape sequences and both quote styles.</p></div>
+    <div class="ocard"><h3># Comments</h3><p>Start every comment line with <code>#</code>. Comments can also appear at the end of a code line.</p></div>
+    <div class="ocard"><h3>📦 Variables</h3><p>Just names — no declaration needed! Created on first assignment. No intrinsic data type (values have types).</p></div>
+    <div class="ocard"><h3>🔢 Data Types</h3><p>Python has int, float, complex, and str. Values are immutable number objects. Python auto-detects types.</p></div>
+    <div class="ocard"><h3>➕ Arithmetic</h3><p>Standard +, -, *, /. Use <code>**</code> for exponentiation. <code>+</code> concatenates strings, <code>*</code> repeats them.</p></div>
+    <div class="ocard"><h3>⬜ Whitespace</h3><p>Indentation defines code blocks — not curly braces. Must be consistent (tabs OR spaces, not both).</p></div>
+    <div class="ocard"><h3>🔗 Assignment</h3><p>Creates references, not copies. Multi-assign with <code>x, y = 1, 2</code>. Swap with <code>x, y = y, x</code>.</p></div>
+    <div class="ocard"><h3>📛 Naming</h3><p>Case-sensitive. Cannot start with a number. Use joined_lower for functions, StudlyCaps for classes.</p></div>
+  </div>
+  <div class="card">
+    <h3>Quick Reference Code Sample</h3>
+    <div class="cb"><span class="cm"># Variables and Arithmetic</span>
+x = <span class="nm">34</span> - <span class="nm">23</span>     <span class="cm"># integer: 11</span>
+y = <span class="st2">"Hello"</span>      <span class="cm"># string</span>
+z = <span class="nm">3.45</span>        <span class="cm"># float</span>
+<span class="kw">if</span> z == <span class="nm">3.45</span> <span class="kw">or</span> y == <span class="st2">"Hello"</span>:
+    x = x + <span class="nm">1</span>
+    y = y + <span class="st2">" World"</span>  <span class="cm"># string concat</span>
+<span class="fn">print</span>(x)   <span class="cm"># 12</span>
+<span class="fn">print</span>(y)   <span class="cm"># Hello World</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ PRINT TAB -->
+<div id="tab-print" class="tc">
+  <h2 class="st">🖨️ Print Statement &amp; Comments</h2>
+  <div class="g2">
+    <div class="card">
+      <h3>The print() Statement</h3>
+      <ul class="sl">
+        <li><code>print("text")</code> — outputs text to console</li>
+        <li><code>print()</code> — prints a blank line</li>
+        <li>Escape sequences: <code>\"</code> includes a quote inside string</li>
+        <li>Strings can use single <code>'</code> OR double <code>"</code> quotes</li>
+        <li><code>"abc" == 'abc'</code> — both are identical</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Comments</h3>
+      <ul class="sl">
+        <li>Start with <code>#</code> — the "pound sign"</li>
+        <li>Each commented line must start with <code>#</code></li>
+        <li>Can appear at end of a line (inline comment)</li>
+        <li>Python ignores everything after <code>#</code></li>
+        <li>Good practice: comment author, date, purpose at top</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Code Examples</h3>
+    <div class="cb"><span class="cm"># swallows.py — demonstrates print() usage</span>
+<span class="fn">print</span>(<span class="st2">"Hello, world!"</span>)
+<span class="fn">print</span>()                                      <span class="cm"># blank line</span>
+<span class="fn">print</span>(<span class="st2">"Suppose two swallows \"carry\" it together."</span>)
+<span class="fn">print</span>(<span class="st2">'African or "European" swallows?'</span>)
+
+<span class="out">Output:
+Hello, world!
+
+Suppose two swallows "carry" it together.
+African or "European" swallows?</span></div>
+  </div>
+  <div class="card">
+    <h3>Common Escape Sequences</h3>
+    <table>
+      <tr><th>Escape</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td><code>\"</code></td><td>Double quote inside double-quoted string</td><td><code>print("She said \"Hi\"")</code></td></tr>
+      <tr><td><code>\'</code></td><td>Single quote inside single-quoted string</td><td><code>print('it\'s')</code></td></tr>
+      <tr><td><code>\n</code></td><td>Newline</td><td><code>print("line1\nline2")</code></td></tr>
+      <tr><td><code>\t</code></td><td>Tab</td><td><code>print("col1\tcol2")</code></td></tr>
+      <tr><td><code>\\</code></td><td>Literal backslash</td><td><code>print("C:\\Users")</code></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============================================================ VARIABLES TAB -->
+<div id="tab-variables" class="tc">
+  <h2 class="st">📦 Variables</h2>
+  <div class="g2">
+    <div class="card">
+      <h3>Key Facts</h3>
+      <ul class="sl">
+        <li>Variables are <strong>names for values</strong></li>
+        <li>Created by use — <strong>no declaration necessary</strong></li>
+        <li>Variables can be assigned to other variables</li>
+        <li>In Python, variables are <strong>just names</strong></li>
+        <li>Variables do <strong>not have data types</strong> — values do</li>
+        <li>You MUST assign a value before using a variable</li>
+        <li>Python does NOT initialize variables with a default</li>
+        <li>Python determines type from the assigned value</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Error: Using Undefined Variable</h3>
+      <div class="cb"><span class="nm">&gt;&gt;&gt;</span> planet = <span class="st2">'Sedna'</span>
+<span class="nm">&gt;&gt;&gt;</span> <span class="fn">print</span>(plant)    <span class="cm"># typo: plant vs planet</span>
+<span class="out">Traceback (most recent call last):
+  File "&lt;pyshell&gt;", line 1, in &lt;module&gt;
+    print plant
+NameError: name 'plant' is not defined</span>
+
+<span class="cm"># Python does NOT initialize to a default value!</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Variable Assignment Examples</h3>
+    <div class="cb"><span class="nm">&gt;&gt;&gt;</span> planet = <span class="st2">'Pluto'</span>   <span class="cm"># planet → 'Pluto'</span>
+<span class="nm">&gt;&gt;&gt;</span> <span class="fn">print</span>(planet)
+<span class="out">Pluto</span>
+<span class="nm">&gt;&gt;&gt;</span> moon = <span class="st2">'Charon'</span>    <span class="cm"># moon → 'Charon'</span>
+<span class="nm">&gt;&gt;&gt;</span> planet = <span class="nm">9</span>         <span class="cm"># planet now points to 9</span>
+                       <span class="cm"># 'Pluto' is garbage collected 🗑️</span></div>
+  </div>
+  <div class="card">
+    <h3>Type is in the Value, Not the Name</h3>
+    <p style="margin-bottom:.75rem">The same variable name can hold different types at different times because <strong>values have types, not variable names</strong>. Python figures out the type automatically based on what is assigned.</p>
+    <div class="cb">planet = <span class="st2">'Pluto'</span>   <span class="cm"># value is str</span>
+planet = <span class="nm">9</span>        <span class="cm"># value is int — same name, new type!</span>
+planet = <span class="nm">3.14</span>     <span class="cm"># value is float</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ TYPES TAB -->
+<div id="tab-types" class="tc">
+  <h2 class="st">🔢 Types, Conversion &amp; Arithmetic</h2>
+  <div class="g2">
+    <div class="card">
+      <h3>Python's 4 Numeric Types</h3>
+      <ul class="sl">
+        <li><strong>int</strong> — signed integers: <code>x = 5</code></li>
+        <li><strong>long</strong> — large integers (can be octal/hex): <code>x = 999999999L</code></li>
+        <li><strong>float</strong> — floating point: <code>x = 3.456</code></li>
+        <li><strong>complex</strong> — complex numbers: <code>x = 3+4j</code></li>
+      </ul>
+      <p style="margin-top:.75rem;font-size:.85rem">Number types are <strong>immutable</strong> — changing the value creates a new object, not modifying the existing one.</p>
+    </div>
+    <div class="card">
+      <h3>Basic Datatypes Summary</h3>
+      <div class="cb"><span class="cm"># int (default for whole numbers)</span>
+z = <span class="fn">int</span>(<span class="nm">5</span>/<span class="nm">2</span>)   <span class="cm"># Answer: 2 (truncated)</span>
+
+<span class="cm"># float</span>
+x = <span class="nm">3.456</span>
+
+<span class="cm"># strings — both quotes valid</span>
+s1 = <span class="st2">"abc"</span>   <span class="cm"># same as 'abc'</span>
+s2 = <span class="st2">'abc'</span>
+s3 = <span class="st2">"matt's"</span>  <span class="cm"># unmatched within string OK</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Data Type Conversion Functions</h3>
+    <table>
+      <tr><th>Function</th><th>Description</th><th>Example</th></tr>
+      <tr><td><code>int(x [,base])</code></td><td>Converts x to integer; base if x is string</td><td><code>int('2') → 2</code></td></tr>
+      <tr><td><code>float(x)</code></td><td>Converts x to floating-point</td><td><code>float(3) → 3.0</code></td></tr>
+      <tr><td><code>complex(real[,imag])</code></td><td>Creates a complex number</td><td><code>complex(3,4) → (3+4j)</code></td></tr>
+      <tr><td><code>chr(x)</code></td><td>Integer to character</td><td><code>chr(65) → 'A'</code></td></tr>
+      <tr><td><code>ord(x)</code></td><td>Single character to integer</td><td><code>ord('A') → 65</code></td></tr>
+      <tr><td><code>hex(x)</code></td><td>Integer to hexadecimal string</td><td><code>hex(255) → '0xff'</code></td></tr>
+      <tr><td><code>oct(x)</code></td><td>Integer to octal string</td><td><code>oct(8) → '0o10'</code></td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Arithmetic Operators</h3>
+    <table>
+      <tr><th>Operation</th><th>Operator</th><th>Example</th><th>Result</th></tr>
+      <tr><td>Addition</td><td><code>+</code></td><td><code>35 + 22</code></td><td>57</td></tr>
+      <tr><td>String concat</td><td><code>+</code></td><td><code>'Py' + 'thon'</code></td><td>'Python'</td></tr>
+      <tr><td>Subtraction</td><td><code>-</code></td><td><code>35 - 22</code></td><td>13</td></tr>
+      <tr><td>Multiplication</td><td><code>*</code></td><td><code>3 * 2</code></td><td>6</td></tr>
+      <tr><td>String repeat</td><td><code>*</code></td><td><code>'Py' * 2</code></td><td>'PyPy'</td></tr>
+      <tr><td>Division</td><td><code>/</code></td><td><code>3.0 / 2</code></td><td>1.5</td></tr>
+      <tr><td>Exponentiation</td><td><code>**</code></td><td><code>2 ** 0.5</code></td><td>1.41421356…</td></tr>
+    </table>
+  </div>
+  <div class="card">
+    <h3>Type Errors to Remember</h3>
+    <div class="cb"><span class="cm"># This works — string * number = repeated concatenation</span>
+string = <span class="st2">'two'</span>; number = <span class="nm">3</span>
+<span class="fn">print</span>(string * number)  <span class="cm"># 'twotwotwo'</span>
+
+<span class="cm"># This FAILS — cannot add string and int directly</span>
+<span class="fn">print</span>(string + number)
+<span class="out">TypeError: cannot concatenate 'str' and 'int' objects</span>
+
+<span class="cm"># FIX: use int() or str() to convert first</span>
+<span class="fn">print</span>(<span class="fn">int</span>(<span class="st2">'2'</span>) + <span class="nm">3</span>)    <span class="cm"># 5 ✓</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ WHITESPACE TAB -->
+<div id="tab-whitespace" class="tc">
+  <h2 class="st">⬜ Whitespace Significance</h2>
+  <div class="hbox"><strong>Key Rule:</strong> Python uses <strong>indentation</strong> to define code blocks instead of curly braces <code>{}</code>. Indentation is MANDATORY, not optional!</div>
+  <div class="g2">
+    <div class="card">
+      <h3>Rules of Whitespace</h3>
+      <ul class="sl">
+        <li>Use a <strong>newline</strong> to end a line of code</li>
+        <li>Use <code>\</code> when you must continue to the next line</li>
+        <li>No <code>{}</code> braces — use <strong>consistent indentation</strong></li>
+        <li>First line with <em>less</em> indentation is <strong>outside</strong> the block</li>
+        <li>First line with <em>more</em> indentation starts a <strong>nested block</strong></li>
+        <li>Colons <code>:</code> signal the start of a new block</li>
+        <li>You may use tabs OR spaces — but <strong>must be consistent</strong></li>
+        <li>In Java indenting is optional; in Python it is <strong>required</strong></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Code Block Example</h3>
+      <div class="cb"><span class="cm"># hello3.py</span>
+<span class="kw">def</span> <span class="fn">hello</span>():
+    <span class="fn">print</span>(<span class="st2">"Hello, world!"</span>)   <span class="cm"># ← indented (inside)</span>
+    <span class="fn">print</span>(<span class="st2">"How are you?"</span>)    <span class="cm"># ← indented (inside)</span>
+
+<span class="cm"># main — calls hello twice (not indented = outside)</span>
+<span class="fn">hello</span>()
+<span class="fn">hello</span>()</div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Python vs Java — Block Style Comparison</h3>
+    <div class="g2">
+      <div>
+        <p style="color:var(--pylb);font-weight:700;margin-bottom:.5rem">✅ Python (indentation)</p>
+        <div class="cb"><span class="kw">if</span> x > <span class="nm">0</span>:
+    <span class="fn">print</span>(<span class="st2">"positive"</span>)
+    <span class="fn">print</span>(<span class="st2">"done"</span>)</div>
+      </div>
+      <div>
+        <p style="color:var(--muted);font-weight:700;margin-bottom:.5rem">Java (curly braces)</p>
+        <div class="cb">if (x > 0) {
+    System.out.println("pos");
+    System.out.println("done");
+}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ ASSIGNMENT TAB -->
+<div id="tab-assignment" class="tc">
+  <h2 class="st">🔗 Assignment</h2>
+  <div class="g2">
+    <div class="card">
+      <h3>What is Binding?</h3>
+      <ul class="sl">
+        <li><em>Binding</em> = setting a name to hold a <strong>reference</strong> to an object</li>
+        <li>Assignment creates <strong>references, not copies</strong></li>
+        <li>Names do not have intrinsic types — <strong>objects have types</strong></li>
+        <li>Python determines the type of the reference automatically</li>
+        <li>You create a name the first time it appears on the <strong>left side</strong> of assignment</li>
+        <li>Unreferenced objects deleted via <strong>garbage collection</strong></li>
+        <li>Python uses <strong>reference semantics</strong></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Assignment Forms</h3>
+      <div class="cb"><span class="cm"># Simple assignment</span>
+x = <span class="nm">3</span>
+
+<span class="cm"># Multiple assignment at once</span>
+x, y = <span class="nm">2</span>, <span class="nm">3</span>
+<span class="fn">print</span>(x)  <span class="cm"># 2</span>
+<span class="fn">print</span>(y)  <span class="cm"># 3</span>
+
+<span class="cm"># Swap values (elegant Python trick!)</span>
+x, y = y, x
+
+<span class="cm"># Chained assignment</span>
+a = b = x = <span class="nm">2</span>   <span class="cm"># all equal 2</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Reference vs Copy Concept</h3>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:.75rem">When you write <code>y = x</code>, you're creating another name tag pointing to the <em>same object</em>. No new object is created — it's a reference!</p>
+    <div class="cb">x = <span class="nm">5</span>       <span class="cm"># x → integer object 5</span>
+y = x       <span class="cm"># y → SAME integer object 5 (reference)</span>
+x = <span class="nm">10</span>      <span class="cm"># x → new integer object 10</span>
+            <span class="cm"># y still → 5 (wasn't affected)</span>
+<span class="fn">print</span>(y)    <span class="cm"># 5</span></div>
+  </div>
+</div>
+
+<!-- ============================================================ NAMING TAB -->
+<div id="tab-naming" class="tc">
+  <h2 class="st">📛 Naming Rules &amp; Conventions</h2>
+  <div class="g2">
+    <div class="card">
+      <h3>Naming Rules (MUST follow)</h3>
+      <ul class="sl">
+        <li>Names are <strong>case sensitive</strong> — <code>Bob</code> ≠ <code>bob</code></li>
+        <li>Cannot start with a <strong>number</strong></li>
+        <li>Can contain: letters, numbers, underscores</li>
+        <li>Valid: <code>bob</code> <code>Bob</code> <code>_bob</code> <code>_2_bob_</code> <code>bob_2</code> <code>BoB</code></li>
+        <li>Cannot use reserved/keywords as names</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Naming Conventions (Community standard)</h3>
+      <ul class="sl">
+        <li><code>joined_lower</code> — for functions, methods, attributes</li>
+        <li><code>joined_lower</code> or <code>ALL_CAPS</code> — for constants</li>
+        <li><code>StudlyCaps</code> — for class names</li>
+        <li><code>camelCase</code> — only to conform to pre-existing conventions</li>
+        <li><code>interface</code>, <code>_internal</code>, <code>__private</code> — attribute visibility</li>
+      </ul>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Reserved Words (Cannot use as variable names)</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.25rem">
+      <script>
+        ['and','assert','break','class','continue','def','del','elif','else','except','exec','finally','for','from','global','if','import','in','is','lambda','not','or','pass','print','raise','return','try','while'].forEach(w => document.write(`<span class="tag tb2">${w}</span>`))
+      </script>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Convention Quick Reference</h3>
+    <table>
+      <tr><th>Use Case</th><th>Convention</th><th>Example</th></tr>
+      <tr><td>Functions &amp; methods</td><td>joined_lower</td><td><code>calculate_total()</code></td></tr>
+      <tr><td>Variables / attributes</td><td>joined_lower</td><td><code>student_name</code></td></tr>
+      <tr><td>Constants</td><td>ALL_CAPS</td><td><code>MAX_SPEED</code></td></tr>
+      <tr><td>Classes</td><td>StudlyCaps</td><td><code>ElectronicDevice</code></td></tr>
+      <tr><td>Private attribute</td><td>__double_under</td><td><code>__password</code></td></tr>
+      <tr><td>Internal attribute</td><td>_single_under</td><td><code>_cache</code></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ============================================================ FLASHCARDS TAB -->
+<div id="tab-flashcards" class="tc">
+  <h2 class="st">🃏 Flashcards</h2>
+  <div class="fa">
+    <p style="color:var(--muted);margin-bottom:1.5rem;font-size:.9rem">Click the card to flip it!</p>
+    <div class="fwrap" onclick="flipCard()">
+      <div class="fc" id="flashcard">
+        <div class="ff">
+          <div class="clabel">Question — click to reveal</div>
+          <div class="ctxt" id="fc-q">Loading...</div>
+        </div>
+        <div class="fb">
+          <div class="clabel">Answer</div>
+          <div class="ctxt" id="fc-a">Loading...</div>
+          <div class="csub" id="fc-code"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fctrls">
+      <button class="btn btn-g" onclick="prevCard()">← Prev</button>
+      <span class="ptxt" id="fc-progress">1 / 40</span>
+      <button class="btn btn-g" onclick="nextCard()">Next →</button>
+    </div>
+    <div class="fctrls" style="margin-top:.5rem">
+      <button class="btn btn-y" onclick="shuffleCards()">🔀 Shuffle</button>
+      <button class="btn btn-p" onclick="resetCards()">↺ Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ GAME TAB -->
+<div id="tab-game" class="tc">
+  <h2 class="st">🎮 Code Sprint — Python Challenge</h2>
+  <div class="gcontainer">
+    <div id="game-start">
+      <div style="text-align:center;padding:2rem">
+        <p style="font-size:3rem;margin-bottom:1rem">🐍</p>
+        <h3 style="font-size:1.5rem;font-weight:800;margin-bottom:.75rem">Python Code Sprint</h3>
+        <p style="color:var(--muted);margin-bottom:2rem;font-size:.95rem">Answer 20 Python questions before time runs out!<br>You have 3 lives. Each question has 10 seconds.</p>
+        <button class="btn btn-y" style="font-size:1rem;padding:.75rem 2rem" onclick="startGame()">▶ Start Game</button>
+      </div>
+    </div>
+    <div id="game-play" style="display:none">
+      <div class="gstats">
+        <div class="sbox"><span class="sv" id="g-score" style="color:var(--pyy)">0</span><span class="slb">Score</span></div>
+        <div class="sbox"><span class="sv" id="g-q" style="color:var(--pylb)">1/20</span><span class="slb">Question</span></div>
+        <div class="sbox"><span class="sv" id="g-streak" style="color:var(--grn)">0</span><span class="slb">Streak 🔥</span></div>
+      </div>
+      <div class="glives" id="g-lives">
+        <span class="heart">❤️</span><span class="heart">❤️</span><span class="heart">❤️</span>
+      </div>
+      <div class="gcarea">
+        <div class="tbar"><div class="tfill" id="g-timer" style="width:100%"></div></div>
+        <div class="gprompt" id="g-prompt">Loading...</div>
+        <div class="gopts" id="g-opts"></div>
+      </div>
+    </div>
+    <div class="gresult" id="game-result">
+      <p style="font-size:3rem">🏆</p>
+      <span class="grscore" id="g-final">0</span>
+      <p style="margin:.75rem 0;color:var(--muted)">Final Score</p>
+      <p id="g-grade" style="font-size:1.1rem;font-weight:700;margin-bottom:1.5rem"></p>
+      <button class="btn btn-y" onclick="startGame()">Play Again</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ QUIZ TAB -->
+<div id="tab-quiz" class="tc">
+  <h2 class="st">📝 75-Item Quiz</h2>
+  <div id="quiz-start">
+    <div class="sscreen">
+      <p style="font-size:3rem">🧪</p>
+      <h2>Python Basics — 75 Item Quiz</h2>
+      <p>Covers all topics: Print, Comments, Variables, Types, Arithmetic, Whitespace, Assignment, and Naming Rules.<br>Answer each question and get instant feedback!</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem">
+        <span class="tag ty">75 Questions</span>
+        <span class="tag tg">Instant Feedback</span>
+        <span class="tag tb2">Live Score</span>
+        <span class="tag tr">Track Wrong Answers</span>
+      </div>
+      <button class="btn btn-y" style="font-size:1rem;padding:.75rem 2rem" onclick="startQuiz()">Begin Quiz →</button>
+    </div>
+  </div>
+  <div id="quiz-active" style="display:none">
+    <div class="qhdr">
+      <div class="sdisplay">
+        <div class="si"><span class="sn" id="q-score">0</span><span class="sl2">Score</span></div>
+        <div class="si"><span class="sn" id="q-correct" style="color:var(--grn)">0</span><span class="sl2">Correct</span></div>
+        <div class="si"><span class="sn" id="q-wrong" style="color:var(--red)">0</span><span class="sl2">Wrong</span></div>
+      </div>
+      <span id="q-num" style="color:var(--muted);font-size:.9rem;font-weight:700">Question 1 of 75</span>
+    </div>
+    <div class="pbo"><div class="pbi" id="q-prog" style="width:1.33%"></div></div>
+    <div class="qcard">
+      <div class="qmeta" id="q-topic">Topic</div>
+      <div class="qtxt" id="q-text">Loading...</div>
+      <div class="ogrid" id="q-opts"></div>
+      <div class="fb2" id="q-fb"></div>
+    </div>
+    <div class="qnav">
+      <button class="btn btn-g" id="q-skip" onclick="skipQuestion()">Skip →</button>
+      <button class="btn btn-p" id="q-next" onclick="nextQuestion()" style="display:none">Next Question →</button>
+    </div>
+  </div>
+  <div id="quiz-result" style="display:none">
+    <div class="rscreen">
+      <p style="font-size:3rem" id="r-emoji">🎉</p>
+      <span class="rscore" id="r-score">0/75</span>
+      <p style="margin:.5rem 0;color:var(--muted)">Questions Correct</p>
+      <p id="r-grade" style="font-size:1.25rem;font-weight:800;margin-bottom:1rem"></p>
+      <p id="r-msg" style="color:var(--muted);margin-bottom:1.5rem;font-size:.9rem"></p>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:.5rem">Answer Map (🟢 correct · 🔴 wrong)</p>
+      <div class="rdot-grid" id="r-dots"></div>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem">
+        <button class="btn btn-y" onclick="startQuiz()">Retake Quiz</button>
+        <button class="btn btn-p" onclick="reviewWrong()">Review Wrong Answers</button>
+      </div>
+    </div>
+    <div id="r-review" style="display:none;margin-top:1rem"></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const flashcards = [
+  {q:"What function displays output in Python?",a:"print()",code:"print('Hello!')"},
+  {q:"How do you print a blank line?",a:"Call print() with no arguments",code:"print()"},
+  {q:"What symbol starts a comment in Python?",a:"The # (pound/hash) sign",code:"# this is a comment"},
+  {q:"Are variables declared before use in Python?",a:"No! They are created on first assignment",code:"x = 5  # x is created here"},
+  {q:"Do Python variables have data types?",a:"No — values have types, not variables",code:"planet = 'Pluto'  # name has no type"},
+  {q:"What error occurs using an undefined variable?",a:"NameError",code:"NameError: name 'x' is not defined"},
+  {q:"What does Python use for code blocks instead of {}?",a:"Indentation (whitespace)",code:"def hello():\n    print('Hi')"},
+  {q:"What operator performs exponentiation in Python?",a:"** (double asterisk)",code:"2 ** 3  # → 8"},
+  {q:"What is 'Py' * 3?",a:"'PyPyPy' — repeated concatenation",code:"'Py' * 3  # → 'PyPyPy'"},
+  {q:"What does int(x) do?",a:"Converts x to an integer",code:"int('5')  # → 5"},
+  {q:"What does float(x) do?",a:"Converts x to floating-point",code:"float(3)  # → 3.0"},
+  {q:"What does chr(65) return?",a:"'A' — converts integer to character",code:"chr(65)  # → 'A'"},
+  {q:"What does ord('A') return?",a:"65 — converts character to integer",code:"ord('A')  # → 65"},
+  {q:"What does assignment create — copies or references?",a:"References, not copies",code:"y = x  # y points to same object"},
+  {q:"How do you swap two variables in Python?",a:"x, y = y, x",code:"x, y = y, x  # elegant swap!"},
+  {q:"Can Python names start with a number?",a:"No — names cannot start with digits",code:"2bob  # INVALID\nbob2  # valid"},
+  {q:"What naming style is used for class names?",a:"StudlyCaps (PascalCase)",code:"class ElectricMotor:"},
+  {q:"What naming style is used for functions?",a:"joined_lower (snake_case)",code:"def calculate_power():"},
+  {q:"What naming style is used for constants?",a:"joined_lower or ALL_CAPS",code:"MAX_VOLTAGE = 220"},
+  {q:"Are Python variable names case-sensitive?",a:"Yes! 'Bob' ≠ 'bob' ≠ 'BOB'",code:"Bob = 1\nbob = 2  # different!"},
+  {q:"What is the default numeric type for whole numbers?",a:"int (signed integer)",code:"x = 5  # type is int"},
+  {q:"What does 'Py' + 'thon' produce?",a:"'Python' — string concatenation",code:"'Py' + 'thon'  # → 'Python'"},
+  {q:"What happens when you do print('a') + 3?",a:"TypeError — cannot mix str and int",code:"TypeError: can't concat str and int"},
+  {q:"What does int(5/2) return?",a:"2 — integer division truncates",code:"int(5/2)  # → 2"},
+  {q:"What are Python's 4 numeric types?",a:"int, long, float, complex",code:""},
+  {q:"What does the colon (:) signal in Python?",a:"Start of a new code block",code:"if x > 0:\n    print('yes')"},
+  {q:"How do you continue a statement to the next line?",a:"Use a backslash \\",code:"total = 1 + 2 + \\\n        3 + 4"},
+  {q:"What is a chained assignment?",a:"Assigning the same value to multiple names",code:"a = b = c = 0"},
+  {q:"What does 2 ** 0.5 compute?",a:"Square root of 2 ≈ 1.41421356...",code:"2 ** 0.5  # → 1.41421..."},
+  {q:"What does hex(255) return?",a:"'0xff' — hexadecimal string",code:"hex(255)  # → '0xff'"},
+  {q:"What is the __ prefix used for?",a:"Private attributes",code:"__password = 'secret'"},
+  {q:"What does x, y = 2, 3 do?",a:"Assigns x=2 and y=3 simultaneously",code:"x, y = 2, 3"},
+  {q:"What is a 'reserved word' in Python?",a:"A word that Python uses internally — cannot be variable name",code:"if, def, while, for, class..."},
+  {q:"Number types in Python are mutable or immutable?",a:"Immutable — changing value creates new object",code:""},
+  {q:"What does oct(x) return?",a:"An octal string representation of x",code:"oct(8)  # → '0o10'"},
+  {q:"What does complex(3,4) create?",a:"A complex number: (3+4j)",code:"complex(3,4)  # → (3+4j)"},
+  {q:"Are 'abc' and \"abc\" the same in Python?",a:"Yes — both are identical strings",code:"'abc' == \"abc\"  # True"},
+  {q:"What is 3.0 / 2 in Python?",a:"1.5 — float division",code:"3.0 / 2  # → 1.5"},
+  {q:"What is the first line with LESS indentation?",a:"It is outside the current block",code:""},
+  {q:"What is the first line with MORE indentation?",a:"It starts a nested block",code:""},
+];
+
+const quizData = [
+  // Print & Comments
+  {t:"Print & Comments",q:"What function is used to display output in Python?",o:["display()","print()","output()","show()"],a:1,e:"print() is Python's built-in output function."},
+  {t:"Print & Comments",q:"What symbol is used to start a comment in Python?",o:["//","/* */","#","--"],a:2,e:"Python uses # to begin a single-line comment."},
+  {t:"Print & Comments",q:"How do you print a blank line in Python?",o:['print(" ")','print()','println()','newline()'],a:1,e:"print() with no arguments outputs an empty line."},
+  {t:"Print & Comments",q:"Which escape sequence includes a double quote inside a double-quoted string?",o:["/'","\\\"","/n","\\\\"],a:1,e:'Use \\" to include a literal double quote inside double quotes.'},
+  {t:"Print & Comments",q:"Which of the following is a valid string in Python?",o:['"Hello" only',"'Hello' only",'Both "Hello" and \'Hello\'',"Neither"],a:2,e:"Python accepts both single and double quoted strings."},
+  {t:"Print & Comments",q:'What is the output of: print("Hello" + " " + "World")?',o:["Hello World",'"Hello World"',"Hello+World","Error"],a:0,e:"The + operator concatenates strings."},
+  {t:"Print & Comments",q:"Can comments appear at the end of a code line?",o:["No","Yes","Only in Python 3","Only for def"],a:1,e:"Inline comments after # are valid anywhere on a line."},
+  {t:"Print & Comments",q:'What does print(\'African or "European" swallows?\') output?',o:["Error","African or \"European\" swallows?","Without quotes","Nothing"],a:1,e:"Single-quoted string allows embedded double quotes without escaping."},
+  {t:"Print & Comments",q:'What does print("2 + 2") output?',o:["4","2+2","2 + 2","Error"],a:2,e:"The expression is inside quotes, so Python prints it as-is."},
+  {t:"Print & Comments",q:"What does each comment line in Python start with?",o:["//","**","#","--"],a:2,e:"Every commented line must begin with the # symbol."},
+  // Variables
+  {t:"Variables",q:"Do variables in Python need to be declared before use?",o:["Yes always","No, created on first assignment","Only for int","Only in functions"],a:1,e:"Python creates variables on first assignment — no declaration needed."},
+  {t:"Variables",q:"Do Python variables have data types?",o:["Yes","No — only values do","Only numbers","Only strings"],a:1,e:"In Python, variables are just names. The VALUES have types."},
+  {t:"Variables",q:"What error occurs when using an undefined variable?",o:["TypeError","ValueError","NameError","SyntaxError"],a:2,e:"NameError is raised when you reference a name that hasn't been assigned."},
+  {t:"Variables",q:"What happens to old values when a variable is reassigned?",o:["Error","Garbage collected","Both stored","Duplicated"],a:1,e:"Python's garbage collector recycles memory for objects with no references."},
+  {t:"Variables",q:"Which statement is TRUE about Python variables?",o:["Have fixed types","Are names for values","Must be declared","Initialized to 0"],a:1,e:"Variables in Python are simply names — they don't have intrinsic types."},
+  {t:"Variables",q:"Can a variable be assigned to another variable?",o:["No","Yes","Only same type","Only numbers"],a:1,e:"Yes — assignment creates a new reference pointing to the same object."},
+  {t:"Variables",q:"Does Python initialize variables with a default value?",o:["Yes, 0","Yes, None","No","Yes, empty string"],a:2,e:"Unlike some languages, Python does NOT set any default value."},
+  {t:"Variables",q:"What determines the type of a reference in Python?",o:["Variable name","A declaration","Value assigned","Programmer explicitly"],a:2,e:"Python auto-detects the type from the value assigned to the name."},
+  {t:"Variables",q:"What is the output of: planet = 'Pluto'; print(planet)?",o:["planet","'Pluto'","Pluto","Error"],a:2,e:"print() outputs the value, not the variable name or its quotes."},
+  {t:"Variables",q:"In Python, variables are just ___.",o:["Objects","Containers","Names","Boxes"],a:2,e:"Variables are simply name tags that point to value objects."},
+  // Types & Conversion
+  {t:"Types & Conversion",q:"What function converts a string to an integer in Python?",o:["toInt()","parseInt()","int()","integer()"],a:2,e:"int() is Python's built-in type conversion function."},
+  {t:"Types & Conversion",q:"What is the result of: print(int('2') + 3)?",o:["'23'","5","23","Error"],a:1,e:"int('2') converts the string to integer 2, then 2+3=5."},
+  {t:"Types & Conversion",q:"What does float(x) do?",o:["Converts to string","Converts to int","Converts to float","Converts to complex"],a:2,e:"float() converts the argument to a floating-point number."},
+  {t:"Types & Conversion",q:"What does chr(65) return?",o:["65","'A'","'a'","Error"],a:1,e:"chr() converts an integer to its ASCII/Unicode character."},
+  {t:"Types & Conversion",q:"What does ord('A') return?",o:["'A'","65","1","'a'"],a:1,e:"ord() converts a single character to its integer (ASCII) value."},
+  {t:"Types & Conversion",q:"What does hex(255) return?",o:["255","'0xff'","'ff'","377"],a:1,e:"hex() converts an integer to its hexadecimal string representation."},
+  {t:"Types & Conversion",q:"What is the result of: string='two'; number=3; print(string * number)?",o:["6","two3","twotwotwo","Error"],a:2,e:"Multiplying a string by an integer repeats the string that many times."},
+  {t:"Types & Conversion",q:"What error occurs with: print('text' + 5)?",o:["NameError","TypeError","ValueError","SyntaxError"],a:1,e:"TypeError: cannot concatenate 'str' and 'int' objects."},
+  {t:"Types & Conversion",q:"What does the + operator do with two strings?",o:["Error","Adds numerically","Concatenates","Compares"],a:2,e:"+ between strings performs concatenation (joins them)."},
+  {t:"Types & Conversion",q:"What does complex(real, imag) create?",o:["A float","A complex number","An integer","A string"],a:1,e:"complex() creates a complex number with real and imaginary parts."},
+  // Arithmetic
+  {t:"Arithmetic",q:"What operator is used for exponentiation in Python?",o:["^","**","pow","exp"],a:1,e:"Python uses ** for exponentiation (e.g. 2**3 = 8)."},
+  {t:"Arithmetic",q:"What is the result of 2 ** 0.5?",o:["4","0.25","1.41421356...","2"],a:2,e:"2**0.5 computes the square root of 2."},
+  {t:"Arithmetic",q:"What is 3.0 / 2 in Python?",o:["1","1.5","2","Error"],a:1,e:"Dividing a float by int gives a float result."},
+  {t:"Arithmetic",q:"What is 35 + 22?",o:["3522","57","13","Error"],a:1,e:"Standard addition: 35 + 22 = 57."},
+  {t:"Arithmetic",q:"What is 35 - 22?",o:["57","3522","13","-13"],a:2,e:"Standard subtraction: 35 - 22 = 13."},
+  {t:"Arithmetic",q:"What does 'Py' * 2 produce?",o:["Error","Py2","PyPy","2Py"],a:2,e:"String * number repeats the string that many times."},
+  {t:"Arithmetic",q:"What does the % operator do in Python?",o:["Percentage","Remainder/Modulo","Division","String only"],a:1,e:"% is the modulo operator — it gives the remainder of division."},
+  {t:"Arithmetic",q:"What is 'Py' + 'thon'?",o:["Error","'Py thon'","'Python'","Py + thon"],a:2,e:"String concatenation joins the two strings."},
+  {t:"Arithmetic",q:"Which is NOT one of Python's 4 numeric types?",o:["int","float","complex","decimal"],a:3,e:"Python's numeric types are int, long, float, and complex."},
+  {t:"Arithmetic",q:"What is 3 * 2?",o:["32","6","1.5","5"],a:1,e:"Standard multiplication: 3 * 2 = 6."},
+  // Datatypes
+  {t:"Datatypes",q:"What is the result of int(5/2)?",o:["2.5","3","2","Error"],a:2,e:"int() truncates — 5/2=2.5, truncated to 2."},
+  {t:"Datatypes",q:"What is the default type for whole numbers in Python?",o:["float","long","int","number"],a:2,e:"Integer literals default to type int in Python."},
+  {t:"Datatypes",q:"Which is a valid float declaration?",o:["x = 3","x = 3.456","x = \"3.456\"","x = int(3)"],a:1,e:"A number with a decimal point is a float."},
+  {t:"Datatypes",q:"Are \"abc\" and 'abc' equivalent in Python?",o:["No","Yes","Only Python 3","Context-dependent"],a:1,e:"Both quote styles produce identical strings in Python."},
+  {t:"Datatypes",q:"Number data types in Python are:",o:["Mutable","Immutable","Dynamic","Optional"],a:1,e:"Changing a number creates a new object — the original is immutable."},
+  // Whitespace
+  {t:"Whitespace",q:"What does Python use instead of {} to define code blocks?",o:["() parentheses","[] brackets","Indentation","BEGIN/END"],a:2,e:"Python uses indentation (whitespace) to define block structure."},
+  {t:"Whitespace",q:"How do you continue a statement to the next line in Python?",o:[";","&","\\","//"],a:2,e:"Use a backslash \\ at the end of the line to continue."},
+  {t:"Whitespace",q:"Is indentation in Python optional?",o:["Yes","No, it is required","Only in classes","Only in functions"],a:1,e:"Indentation is mandatory in Python — it defines the code structure."},
+  {t:"Whitespace",q:"What does a colon (:) signal in Python?",o:["End of statement","Start of new block","A comment","Division"],a:1,e:"Colons signal the start of a new indented block."},
+  {t:"Whitespace",q:"In Python, can you mix tabs and spaces freely?",o:["Yes","No, must be consistent","Only Python 2","Always use tabs"],a:1,e:"You must use either tabs or spaces consistently throughout."},
+  {t:"Whitespace",q:"What does 'first line with less indentation' mean?",o:["Error","Outside the block","Starts nested block","Continues block"],a:1,e:"Reducing indentation signals the end of the current block."},
+  {t:"Whitespace",q:"What does 'first line with more indentation' start?",o:["Error","New file","Nested block","Comment"],a:2,e:"Adding more indentation creates a nested block inside the current one."},
+  {t:"Whitespace",q:"In Java, indentation is ___. In Python, indentation is ___.",o:["Required / Optional","Optional / Required","Both required","Both optional"],a:1,e:"Java indentation is cosmetic; Python requires it for block structure."},
+  {t:"Whitespace",q:"What do you use when you MUST break a line early?",o:[";",",","\\","&"],a:2,e:"The backslash \\ allows line continuation."},
+  {t:"Whitespace",q:"Whitespace is especially meaningful in Python for indentation and:",o:["Spaces between operators","Placement of newlines","Blank lines between functions","Tab width"],a:1,e:"Indentation and newline placement both have structural meaning."},
+  // Assignment
+  {t:"Assignment",q:"What does 'binding a variable' mean in Python?",o:["Locking a value","Setting a name to hold a reference","Declaring a type","Initializing to zero"],a:1,e:"Binding means associating a name with an object reference."},
+  {t:"Assignment",q:"Does Python assignment create copies or references?",o:["Copies","References","Both","Neither"],a:1,e:"Assignment creates references — both names point to the same object."},
+  {t:"Assignment",q:"How do you assign to multiple variables in one line?",o:["x=1, y=2","x,y = 1,2","(x,y) = {1,2}","x=y=1=2"],a:1,e:"Python supports simultaneous multi-assignment with commas."},
+  {t:"Assignment",q:"What does x, y = y, x accomplish?",o:["Error","Swaps values of x and y","Assigns y to both","Doubles both"],a:1,e:"This is Python's elegant one-line swap — no temp variable needed!"},
+  {t:"Assignment",q:"What is a = b = x = 2 called?",o:["Multiple assignment","Chained assignment","Parallel assignment","Sequential"],a:1,e:"Chained assignment assigns the same value to multiple names."},
+  {t:"Assignment",q:"When is a name created in Python?",o:["At declaration","First on left side of assignment","At import","At program start"],a:1,e:"A name is created the very first time it appears on the left of =."},
+  {t:"Assignment",q:"How are unreferenced objects cleaned up in Python?",o:["Manual deletion only","Garbage collection","Operating system","They aren't"],a:1,e:"Python's garbage collector automatically reclaims unused memory."},
+  {t:"Assignment",q:"After x,y = 2,3; what is the value of x?",o:["3","2","2,3","Error"],a:1,e:"x gets the first value (2) in the multi-assignment."},
+  {t:"Assignment",q:"After x,y = 2,3 then x,y = y,x; what is x now?",o:["2","3","Error","5"],a:1,e:"After swapping, x gets y's old value which was 3."},
+  {t:"Assignment",q:"Names in Python do not have intrinsic types. What has types?",o:["Variables","Objects/Values","Functions","Modules"],a:1,e:"The objects/values themselves carry type information, not the name."},
+  // Naming
+  {t:"Naming Rules",q:"Are Python names case-sensitive?",o:["No","Yes","Only for classes","Only for functions"],a:1,e:"bob, Bob, and BOB are three different names in Python."},
+  {t:"Naming Rules",q:"Can a Python name start with a number?",o:["Yes","No","Only if followed by a letter","Only integers"],a:1,e:"Names must start with a letter or underscore, never a digit."},
+  {t:"Naming Rules",q:"Which characters can appear in a Python name?",o:["Only letters","Letters, numbers, underscores","Any character","Letters and dashes"],a:1,e:"Valid characters: a-z, A-Z, 0-9, and _ (underscore)."},
+  {t:"Naming Rules",q:"Which is a valid Python name?",o:["2bob","bob-2","bob_2","bob.2"],a:2,e:"bob_2 uses only valid characters and doesn't start with a digit."},
+  {t:"Naming Rules",q:"What naming convention is used for functions and methods?",o:["StudlyCaps","camelCase","joined_lower","ALL_CAPS"],a:2,e:"Functions use joined_lower (snake_case) in Python community conventions."},
+  {t:"Naming Rules",q:"What naming convention is used for class names?",o:["ALL_CAPS","joined_lower","StudlyCaps","camelCase"],a:2,e:"Class names use StudlyCaps (PascalCase) convention."},
+  {t:"Naming Rules",q:"What naming convention is used for constants?",o:["camelCase","joined_lower or ALL_CAPS","StudlyCaps","__private"],a:1,e:"Constants use joined_lower or ALL_CAPS."},
+  {t:"Naming Rules",q:"Which of the following is a Python reserved word?",o:["define","function","def","method"],a:2,e:"def is used to define functions in Python — it's a keyword."},
+  {t:"Naming Rules",q:"What prefix indicates a private attribute in Python?",o:["private_","__","#","@"],a:1,e:"A double underscore prefix (__) marks an attribute as private."},
+  {t:"Naming Rules",q:"camelCase in Python is used only for:",o:["Class definitions","Conforming to pre-existing conventions","All functions","Constants"],a:1,e:"camelCase is only used to match pre-existing code conventions."},
+];
+
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+function showTab(id) {
+  document.querySelectorAll('.tc').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tb').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// ============================================================
+// FLASHCARDS
+// ============================================================
+let fcIndex = 0;
+let fcOrder = [...Array(flashcards.length).keys()];
+
+function loadCard() {
+  const card = flashcards[fcOrder[fcIndex]];
+  document.getElementById('fc-q').textContent = card.q;
+  document.getElementById('fc-a').textContent = card.a;
+  document.getElementById('fc-code').textContent = card.code;
+  document.getElementById('fc-progress').textContent = `${fcIndex + 1} / ${flashcards.length}`;
+  const fc = document.getElementById('flashcard');
+  fc.classList.remove('flipped');
+}
+
+function flipCard() {
+  document.getElementById('flashcard').classList.toggle('flipped');
+}
+
+function nextCard() {
+  fcIndex = (fcIndex + 1) % flashcards.length;
+  loadCard();
+}
+
+function prevCard() {
+  fcIndex = (fcIndex - 1 + flashcards.length) % flashcards.length;
+  loadCard();
+}
+
+function shuffleCards() {
+  for (let i = fcOrder.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [fcOrder[i], fcOrder[j]] = [fcOrder[j], fcOrder[i]];
+  }
+  fcIndex = 0;
+  loadCard();
+}
+
+function resetCards() {
+  fcOrder = [...Array(flashcards.length).keys()];
+  fcIndex = 0;
+  loadCard();
+}
+
+loadCard();
+
+// ============================================================
+// QUIZ
+// ============================================================
+let qIndex = 0, qScore = 0, qCorrect = 0, qWrong = 0;
+let qAnswered = [];
+let qOrder = [...Array(quizData.length).keys()];
+let qAnsweredCurrent = false;
+
+function startQuiz() {
+  qIndex = 0; qScore = 0; qCorrect = 0; qWrong = 0;
+  qAnswered = new Array(75).fill(null);
+  qOrder = [...Array(quizData.length).keys()];
+  document.getElementById('quiz-start').style.display = 'none';
+  document.getElementById('quiz-active').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('r-review').style.display = 'none';
+  loadQuestion();
+}
+
+function loadQuestion() {
+  if (qIndex >= quizData.length) { showResults(); return; }
+  qAnsweredCurrent = false;
+  const q = quizData[qIndex];
+  document.getElementById('q-num').textContent = `Question ${qIndex + 1} of 75`;
+  document.getElementById('q-topic').textContent = q.t;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-prog').style.width = ((qIndex / 75) * 100) + '%';
+  document.getElementById('q-score').textContent = qScore;
+  document.getElementById('q-correct').textContent = qCorrect;
+  document.getElementById('q-wrong').textContent = qWrong;
+  const fb = document.getElementById('q-fb');
+  fb.className = 'fb2'; fb.textContent = '';
+  document.getElementById('q-next').style.display = 'none';
+  document.getElementById('q-skip').style.display = 'inline-flex';
+  const opts = document.getElementById('q-opts');
+  opts.innerHTML = '';
+  q.o.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'ob';
+    btn.textContent = String.fromCharCode(65 + i) + '. ' + opt;
+    btn.onclick = () => answerQuestion(i, btn, q);
+    opts.appendChild(btn);
+  });
+}
+
+function answerQuestion(chosen, btn, q) {
+  if (qAnsweredCurrent) return;
+  qAnsweredCurrent = true;
+  const correct = chosen === q.a;
+  const fb = document.getElementById('q-fb');
+  document.querySelectorAll('.ob').forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.a) b.classList.add('correct');
+    else if (i === chosen && !correct) b.classList.add('wrong');
+  });
+  if (correct) {
+    qScore += 2; qCorrect++;
+    qAnswered[qIndex] = true;
+    fb.textContent = '✅ Correct! ' + q.e;
+    fb.className = 'fb2 show cfb';
+  } else {
+    qWrong++;
+    qAnswered[qIndex] = false;
+    fb.textContent = '❌ Incorrect. ' + q.e;
+    fb.className = 'fb2 show wfb';
+  }
+  document.getElementById('q-score').textContent = qScore;
+  document.getElementById('q-correct').textContent = qCorrect;
+  document.getElementById('q-wrong').textContent = qWrong;
+  document.getElementById('q-next').style.display = 'inline-flex';
+  document.getElementById('q-skip').style.display = 'none';
+}
+
+function nextQuestion() {
+  qIndex++;
+  loadQuestion();
+}
+
+function skipQuestion() {
+  if (!qAnsweredCurrent) { qAnswered[qIndex] = false; qWrong++; }
+  qIndex++;
+  loadQuestion();
+}
+
+function showResults() {
+  document.getElementById('quiz-active').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+  const pct = Math.round((qCorrect / 75) * 100);
+  document.getElementById('r-score').textContent = `${qCorrect}/75`;
+  let grade, msg, emoji;
+  if (pct >= 90) { grade = 'EXCELLENT! 🏆'; msg = 'Outstanding mastery of Python Basics!'; emoji = '🏆'; }
+  else if (pct >= 80) { grade = 'GREAT JOB! 🌟'; msg = 'Strong understanding — review a few more concepts.'; emoji = '🌟'; }
+  else if (pct >= 70) { grade = 'GOOD! 👍'; msg = 'Solid foundation — study the topics you missed.'; emoji = '👍'; }
+  else if (pct >= 60) { grade = 'PASSING 📚'; msg = 'Review the flowcharts and missed topics carefully.'; emoji = '📚'; }
+  else { grade = 'NEEDS MORE STUDY 💪'; msg = 'Go back through each tab and review the flashcards!'; emoji = '💪'; }
+  document.getElementById('r-emoji').textContent = emoji;
+  document.getElementById('r-grade').textContent = `${pct}% — ${grade}`;
+  document.getElementById('r-msg').textContent = msg;
+  const dots = document.getElementById('r-dots');
+  dots.innerHTML = '';
+  qAnswered.forEach((ans, i) => {
+    const d = document.createElement('div');
+    d.className = 'rdot ' + (ans === true ? 'cd' : 'wd');
+    d.title = `Q${i+1}: ${quizData[i].t}`;
+    d.textContent = i + 1;
+    dots.appendChild(d);
+  });
+}
+
+function reviewWrong() {
+  const rv = document.getElementById('r-review');
+  rv.style.display = 'block';
+  let html = '<h3 style="margin-bottom:1rem;color:var(--red)">❌ Wrong Answers — Review These</h3>';
+  quizData.forEach((q, i) => {
+    if (qAnswered[i] === false) {
+      html += `<div class="card" style="border-left:3px solid var(--red);margin-bottom:.75rem">
+        <div class="qmeta">${q.t} — Q${i+1}</div>
+        <div class="qtxt">${q.q}</div>
+        <p style="color:var(--grn);font-size:.9rem;margin-top:.5rem">✅ Correct answer: <strong>${q.o[q.a]}</strong></p>
+        <p style="color:var(--muted);font-size:.85rem;margin-top:.25rem">${q.e}</p>
+      </div>`;
+    }
+  });
+  rv.innerHTML = html;
+  rv.scrollIntoView({ behavior: 'smooth' });
+}
+
+// ============================================================
+// GAME
+// ============================================================
+const gameQuestions = [
+  {q:"What is the output of: print('Py' * 3)?",o:["PyPy","PyPyPy","3Py","Error"],a:1},
+  {q:"Which is valid Python? Choose the comment syntax:",o:["// this","/* this */","# this","-- this"],a:2},
+  {q:"What is int('5') + 2?",o:["52","7","'52'","Error"],a:1},
+  {q:"What error: print(plant) if only planet is defined?",o:["TypeError","NameError","SyntaxError","ValueError"],a:1},
+  {q:"What is 2 ** 8?",o:["16","256","28","Error"],a:1},
+  {q:"How to swap x and y in one line?",o:["swap(x,y)","temp=x;x=y;y=temp","x,y = y,x","x=y; y=x"],a:2},
+  {q:"What does print() with no arguments do?",o:["Prints None","Prints blank line","Error","Prints 0"],a:1},
+  {q:"Which naming style for class names?",o:["joined_lower","ALL_CAPS","StudlyCaps","camelCase"],a:2},
+  {q:"What is 'Hello' + ' ' + 'World'?",o:["Error","Hello World","'Hello World'","HelloWorld"],a:1},
+  {q:"What operator is exponentiation?",o:["^","EXP","**","POW"],a:2},
+  {q:"What does chr(97) return?",o:["97","'A'","'a'","Error"],a:2},
+  {q:"Can a Python name start with a number?",o:["Yes","No","Only floats","Only with _"],a:1},
+  {q:"What is int(7/2)?",o:["3.5","4","3","Error"],a:2},
+  {q:"Python blocks are defined by:",o:["{}","()","Indentation","BEGIN/END"],a:2},
+  {q:"What is 'Py' + 'thon'?",o:["Py + thon","'Python'","Python","Error"],a:2},
+  {q:"Which is NOT a Python numeric type?",o:["int","float","decimal","complex"],a:2},
+  {q:"What does ord('Z') do?",o:["Returns 'z'","Returns 90","Returns 26","Error"],a:1},
+  {q:"What is hex(16)?",o:["16","'0x10'","'10'","'h16'"],a:1},
+  {q:"After a = b = 5, what is b?",o:["None","0","5","Error"],a:2},
+  {q:"Comments in Python start with:",o:["//","#","/*","--"],a:1},
+];
+
+let gScore = 0, gQ = 0, gLives = 3, gStreak = 0, gTimer = null, gTimeLeft = 10;
+let gAnswered = false;
+
+function startGame() {
+  gScore = 0; gQ = 0; gLives = 3; gStreak = 0;
+  document.getElementById('game-start').style.display = 'none';
+  document.getElementById('game-play').style.display = 'block';
+  document.getElementById('game-result').classList.remove('show');
+  updateGameUI();
+  loadGameQuestion();
+}
+
+function updateGameUI() {
+  document.getElementById('g-score').textContent = gScore;
+  document.getElementById('g-q').textContent = (gQ + 1) + '/20';
+  document.getElementById('g-streak').textContent = gStreak;
+  let hearts = '';
+  for (let i = 0; i < 3; i++) hearts += `<span class="heart">${i < gLives ? '❤️' : '🖤'}</span>`;
+  document.getElementById('g-lives').innerHTML = hearts;
+}
+
+function loadGameQuestion() {
+  if (gQ >= gameQuestions.length || gLives <= 0) { endGame(); return; }
+  gAnswered = false;
+  const q = gameQuestions[gQ];
+  document.getElementById('g-prompt').textContent = q.q;
+  const opts = document.getElementById('g-opts');
+  opts.innerHTML = '';
+  q.o.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'gob';
+    btn.textContent = opt;
+    btn.onclick = () => answerGame(i, btn);
+    opts.appendChild(btn);
+  });
+  startTimer();
+}
+
+function startTimer() {
+  gTimeLeft = 10;
+  clearInterval(gTimer);
+  document.getElementById('g-timer').style.width = '100%';
+  gTimer = setInterval(() => {
+    gTimeLeft -= 0.1;
+    const pct = (gTimeLeft / 10) * 100;
+    document.getElementById('g-timer').style.width = pct + '%';
+    if (gTimeLeft <= 0) {
+      clearInterval(gTimer);
+      if (!gAnswered) { timeOut(); }
+    }
+  }, 100);
+}
+
+function timeOut() {
+  gAnswered = true;
+  gStreak = 0; gLives--;
+  updateGameUI();
+  const q = gameQuestions[gQ];
+  document.querySelectorAll('.gob').forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.a) b.classList.add('gc');
+  });
+  setTimeout(() => { gQ++; loadGameQuestion(); }, 1200);
+}
+
+function answerGame(chosen, btn) {
+  if (gAnswered) return;
+  gAnswered = true;
+  clearInterval(gTimer);
+  const q = gameQuestions[gQ];
+  document.querySelectorAll('.gob').forEach((b, i) => {
+    b.disabled = true;
+    if (i === q.a) b.classList.add('gc');
+    else if (i === chosen && chosen !== q.a) b.classList.add('gw');
+  });
+  if (chosen === q.a) {
+    gStreak++;
+    const bonus = gStreak >= 3 ? 20 : 10;
+    gScore += bonus;
+  } else {
+    gStreak = 0; gLives--;
+  }
+  updateGameUI();
+  setTimeout(() => { gQ++; loadGameQuestion(); }, 1000);
+}
+
+function endGame() {
+  clearInterval(gTimer);
+  document.getElementById('game-play').style.display = 'none';
+  const result = document.getElementById('game-result');
+  result.classList.add('show');
+  document.getElementById('g-final').textContent = gScore + ' pts';
+  let grade = gScore >= 180 ? '🏆 Python Master!' : gScore >= 130 ? '🌟 Great Performance!' : gScore >= 80 ? '👍 Good Job!' : '💪 Keep Practicing!';
+  document.getElementById('g-grade').textContent = grade;
+}
+</script>
+</body>
+</html>
